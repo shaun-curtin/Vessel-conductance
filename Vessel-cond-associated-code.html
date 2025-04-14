@@ -190,11 +190,11 @@
     <div id="toc">
       <ul>
       <li><a href="#readme">README</a></li>
-      <li><a href="#grna-design">gRNA design</a></li>
-      <li><a href="#amplicon-sequencing">Amplicon sequencing</a></li>
+      <li><a href="#diversity">Diversity</a></li>
       <li><a href="#gwas">GWAS</a></li>
       <li><a href="#snpeff">SNPEff</a></li>
-      <li><a href="#diversity">Diversity</a></li>
+      <li><a href="#grna-design">gRNA design</a></li>
+      <li><a href="#amplicon-sequencing">Amplicon sequencing</a></li>
       <li><a href="#genome-assembly">Genome assembly</a></li>
       </ul>
     </div>
@@ -247,441 +247,441 @@ pre { /* Code block */
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">https://github.com/shaun-curtin/Vessel-conductance/tree/main</span></span></code></pre></div>
 </div>
 </div>
-<div id="grna-design" class="section level2 tabset tabset-fade tabset-pills">
-<h2 class="tabset tabset-fade tabset-pills">gRNA design</h2>
-<div id="steps" class="section level3">
-<h3>Steps</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A custom python script to generate gRNA primers from known gRNA target sequences </span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1.</span> Make a 6 line input text file <span class="er">(</span><span class="ex">No</span> spaces before or after text, PAM optional<span class="kw">)</span></span>
+<div id="diversity" class="section level2 tabset tabset-fade tabset-pills">
+<h2 class="tabset tabset-fade tabset-pills">Diversity</h2>
+<div id="pca" class="section level3">
+<h3>PCA</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dist_populations</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/dataForPCA.mdist&quot;</span><span class="ex">,</span> header=FALSE<span class="kw">)</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Input</span> file example:</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">----------------------</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Gene_ID</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span>gRNA_name</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ACGATGATGATGACAAGGAC</span> AGG</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Gene_ID</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span>gRNA_name</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">CAGTAGTACCCAGTATGACA</span> TGG</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">------------------------</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">2.</span> Download the grna_primers.py python script: </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">3.</span> Run the python script from command line:</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>   <span class="ex">python</span> grna_primers.py </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>   <span class="ex">[Enter</span> input file name on command line]</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ex">4.</span> Output: </span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span> file named <span class="st">&quot;gRNA_primers_gene_gRNA_date&quot;</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file</span> contains: primers for each gRNA for IDT Bulk Input primer ordering</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span> file named <span class="st">&quot;gRNA_primer_TAG_gene_gRNA_date&quot;</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file</span> contains: gRNA name, gene, primers, and TAG insert sequence for Geneious Prime vector assembly. </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Acc</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">famInd</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/id&quot;</span><span class="ex">,</span> header=T<span class="kw">)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Origin</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">famOrigin</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/origin&quot;</span><span class="ex">,header=T</span><span class="kw">)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#CMDscale PCA</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mds_populations</span><span class="op">&lt;</span>-cmdscale<span class="er">(</span><span class="ex">dist_populations,eig=TRUE,</span> 5<span class="kw">)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">?cmdscale</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#EigenVectors</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">eigenvec_pop</span><span class="op">&lt;</span>- cbind<span class="er">(</span><span class="ex">famOrigin,famInd,mds_populations</span><span class="va">$points</span><span class="kw">)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#Proportion of variation captured by each vector</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">eigen_percent</span><span class="op">&lt;</span>- round<span class="er">(</span><span class="kw">((</span><span class="va">mds_populations$eig</span><span class="op">/</span><span class="va">sum</span>(<span class="va">mds_populations$eig</span>))<span class="op">*</span><span class="dv">100</span>)<span class="kw">,</span><span class="dv">2</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="va">library</span>(<span class="va">tidyverse</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop</span>)<span class="op">+</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA of M.tuncatula HapMap accessions&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()<span class="op">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="va">scale_y_reverse</span>()<span class="op">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="va">scale_x_reverse</span>()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ex">5.</span> Evaluate off targets with Cas-OFFinder v2.4</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ex">./cas-offinder</span> input.txt G out.txt</span></code></pre></div>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">drop</span> <span class="va">plants</span> <span class="va">with</span> <span class="va">no</span> <span class="va">origin</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span><span class="op">&lt;-</span><span class="va">subset</span>(<span class="va">eigenvec_pop</span><span class="kw">,</span> <span class="va">origin</span><span class="op">!=</span><span class="st">&quot;Not_avail&quot;</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span> <span class="va">on</span> <span class="va">existing</span> <span class="va">origins</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop2</span>)<span class="op">+</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop2</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop2</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA plot of M.tuncatula HapMap accession SNP subset&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop3</span><span class="op">&lt;-</span><span class="va">subset</span>(<span class="va">eigenvec_pop2</span><span class="kw">,</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Morocco&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Algeria&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Spain&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;France&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span> <span class="st">&quot;Greece&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Tunisia&quot;</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop3</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span> <span class="va">on</span> <span class="va">major</span> <span class="va">origins</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop3</span>)<span class="op">+</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop3</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop3</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA plot of M.tuncatula HapMap accession SNP subset&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span></code></pre></div>
 </div>
-<div id="grna_primers.py" class="section level3">
-<h3>grna_primers.py</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">   #Open infile </span></span>
+<div id="admixture" class="section level3">
+<h3>Admixture</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Addmixture</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">tbl2=</span>read.table<span class="kw">(</span><span class="st">&quot;my.vcf.gz.2.Q&quot;</span><span class="kw">)</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">infile_name= input(&quot;Enter input file name:  &quot;)</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">infile= open(infile_name,&#39;</span><span class="ex">rt</span><span class="st">&#39;) </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">    #Get date for output file name </span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">import time</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">date= time.strftime(&quot;%Y%m%d&quot;)</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">date=date[0:8]</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">    #Make lists to fill</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">name=[]</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">grna=[]</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">rc=[]</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">revcomp=[]</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="st">c=[]</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">comp=[]</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">f_primer=[]</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">r_primer=[]</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">tag_insert=[]</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">genename=[]</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">info=[]</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">print(&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot; &quot;,&quot;Computing primer sequences...&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;File created&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="st">    #Loop through infile and put into in lists</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="st">for line in infile:</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="st">    line = line.rstrip()</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="st">        #If header line has &gt;, then save as gRNA name </span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="st">    if line[0] == &quot;&gt;&quot;:</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="st">        line.split(&quot;&gt;&quot;)</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="st">        name.append(line[1:])</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="st">    if line[0] != &quot;&gt;&quot;:</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="st">        info.append(line[0:]) </span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="st">    #if line is DNA then save as gRNA sequence </span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="st">for item in info: </span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="st">    count= item.count(&quot;A&quot;)+item.count(&quot;C&quot;)+item.count(&quot;G&quot;)+item.count(&quot;T&quot;)</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="st">    if count &gt; 10:</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="st">        grna.append(item) </span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="st">        #If not then save as gene name </span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="st">    else:</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="st">        genename.append(item)</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="st">    #Open outfile</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot; &quot;,&quot;Computing TAG insert sequences...&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;File created&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="st">outfile=open(&quot;gRNA_primers_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="st">outfile2=open(&quot;gRNA_primer_TAG_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="st">outfile3=open(&quot;gRNA_TAG_inserts_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="st">for ind, seq in enumerate(grna): </span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="st">    seq</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="st">    seq=seq.split(&quot; &quot;)</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="st">    seq=seq[0]</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="st">        #Complement the gRNA sequence</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="st">    c=seq.translate(str.maketrans(&quot;ACGT&quot;,&quot;TGCA&quot;))</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="st">    comp.append(c)</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="st">    f_primer.append(&quot;tgca&quot;+seq)</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="st">        #Reverse the complement of gRNA sequence</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="st">    rc= c[::-1]</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="st">    revcomp.append(rc)</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="st">    r_primer.append(&quot;aaac&quot;+rc)</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="st">        #TAG inserts for gRNA sequence</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="st">    tag_insert.append(&quot;TCGTCTCCtgca&quot;+seq+&quot;gtttTGAGACG&quot;)</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="st">        #Make primer and TAG file </span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&quot;Primers and TAG insert for target&quot;,&quot;[&quot;+genename[ind]+&quot;]:&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;&gt;&quot;+name[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;gRNA sequence &quot;, \</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="st">            &#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&quot; &quot;,&quot; &quot;, grna[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-F&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,f_primer[ind],\</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="st">                  &#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-R&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,r_primer[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;TAG insert&quot;,&quot; &quot;,\</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="st">                      tag_insert[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,file=outfile2) </span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="st">        #Make primer  file     </span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="st">    print(name[ind]+&quot;-F&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,f_primer[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-R&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,r_primer[ind],file=outfile) </span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&quot;&gt;&quot;+name[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,tag_insert[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,file=outfile3) </span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;Done!&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="st">infile.close()</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="st">outfile.close()</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="st">outfile2.close()   </span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span></code></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">barplot</span><span class="er">(</span><span class="ex">t</span><span class="er">(</span><span class="ex">as.matrix</span><span class="er">(</span><span class="ex">tbl2</span><span class="kw">))</span><span class="ex">,</span> col=c<span class="er">(</span><span class="st">&quot;lightseagreen&quot;</span><span class="ex">,</span> <span class="st">&quot;lightcoral&quot;</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          <span class="va">xlab=</span><span class="st">&quot;Accessions&quot;</span>, <span class="va">ylab=</span><span class="st">&quot;Ancestry&quot;</span>, <span class="va">border=</span>NA<span class="er">)</span></span></code></pre></div>
 </div>
-<div id="evaluate-off-targets" class="section level3">
-<h3>Evaluate off targets</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#make 4 line input text file (input.txt)</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">----------------------------------</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">full/path/to/r108/genome</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">NNNNNNNNNNNNNNNNNNNNNGG</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TGTAACATCAGGGTATGAGG</span>    5</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">CCCATCACAGAATCCCACAG</span>    5</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">----------------------------------</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#run program</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">./cas-offinder</span> input.txt G out.txt</span></code></pre></div>
-</div>
-</div>
-<div id="amplicon-sequencing" class="section level2 tabset tabset-fade tabset-pills">
-<h2 class="tabset tabset-fade tabset-pills">Amplicon sequencing</h2>
-<div id="base-calling" class="section level3">
-<h3>Base-calling</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=4</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --tmp=2g</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -p v100</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --gres=gpu:v100:1</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=dorado.sh</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load dorado/0.5.1</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#base calling</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">dorado</span> basecaller hac pod5/ <span class="op">&gt;</span> all_reads.dorado.bam <span class="dt">\</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>--kit-name SQK-RBK114-96 <span class="dt">\</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>--recursive</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#####################</span></span></code></pre></div>
-</div>
-<div id="de-multiplex" class="section level3">
-<h3>De-multiplex</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=4</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --tmp=2g</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -p v100</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --gres=gpu:v100:1</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=demux.sh</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load dorado/0.5.1 </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">dorado</span> demux <span class="at">--output-dir</span> ~/nanopore/ <span class="at">--emit-fastq</span> <span class="at">--kit-name</span> SQK-RBK114-96 all_reads.dorado.bam</span></code></pre></div>
-</div>
-<div id="filter-reads" class="section level3">
-<h3>Filter reads</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 5</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00      </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=nanofilt.sh</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=1G  </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load python</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#location of list file with sample names</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="va">LINE=$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$SLURM_ARRAY_TASK_ID</span><span class="st">&quot;</span>p samples.txt<span class="va">)</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#filter reads for (90% accurate)</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="ex">filtlong</span> <span class="at">--max_length</span> 1000 <span class="at">--min_length</span> 100 <span class="at">--min_mean_q</span> 99 SQK-RBK114-96_<span class="va">${LINE}</span>.fastq <span class="op">&gt;</span> <span class="va">${LINE}</span>.q90.ts.fastq</span></code></pre></div>
+<div id="snp-dendrogram" class="section level3">
+<h3>SNP dendrogram</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">gdsfmt</span><span class="kw">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ggplot2</span><span class="kw">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ape</span><span class="kw">)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">vcfR</span><span class="kw">)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">tidyr</span><span class="kw">)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">SNPRelate</span><span class="kw">)</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ggtree</span><span class="kw">)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Get data</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">setwd</span><span class="er">(</span><span class="st">&quot;~/SNP_tree_HapMap&quot;</span><span class="kw">)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">vcf.fn</span> <span class="op">&lt;</span>- <span class="st">&quot;mynewhc_markers.noinfo.vcf&quot;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#VCF to GDS</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">snpgdsVCF2GDS</span><span class="er">(</span><span class="ex">vcf.fn,</span> <span class="st">&quot;test1.gds&quot;</span>, method=<span class="st">&quot;biallelic.only&quot;</span><span class="kw">)</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">snpgdsSummary</span><span class="er">(</span><span class="st">&quot;test1.gds&quot;</span><span class="kw">)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#location of GDS: test1.gds </span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Preparing the data so it is formatted correctly to create a dissimilarity matrix.</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">gds_formatted</span> <span class="op">&lt;</span>- snpgdsOpen<span class="er">(</span><span class="st">&quot;test1.gds&quot;</span><span class="kw">)</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">set.seed</span><span class="er">(</span><span class="ex">100</span><span class="kw">)</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Identity-By-State (IBS) analysis on genotypes</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="ex">ibs_Exon2010_03</span> <span class="op">&lt;</span>- snpgdsHCluster<span class="er">(</span><span class="ex">snpgdsIBS</span><span class="er">(</span><span class="ex">gds_formatted,num.thread=2,</span> autosome.only=FALSE<span class="kw">))</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine groups by permutation</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ex">rvExon2010_03</span> <span class="op">&lt;</span>- snpgdsCutTree<span class="er">(</span><span class="ex">ibs_Exon2010_03</span><span class="kw">)</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Saving the dendrograms to new Variables</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="ex">treeExon2010_03</span> = rvExon2010_03<span class="va">$dendrogram</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="va">SNPTree=</span> <span class="ex">plot</span><span class="er">(</span><span class="ex">rvExon2010_03</span><span class="va">$dendrogram</span><span class="ex">,horiz=T,</span> main =<span class="st">&quot;Medicago HapMap SNP dendrogram&quot;</span> <span class="kw">)</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">#plot circular tree</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="ex">ggtree</span><span class="er">(</span><span class="ex">as.phylo</span><span class="er">(</span><span class="ex">as.hclust</span><span class="er">(</span><span class="ex">treeExon2010_03</span><span class="kw">))</span><span class="ex">,</span> layout=<span class="st">&quot;circular&quot;</span>,color=<span class="st">&#39;darkgreen&#39;</span>, branch.length=<span class="st">&quot;branch.length&quot;</span><span class="kw">)</span><span class="ex">+</span> geom_tiplab<span class="er">(</span><span class="va">size=</span>2.5, <span class="ex">aes</span><span class="er">(</span><span class="va">angle=</span>angle<span class="kw">))</span><span class="ex">+</span> ggtitle<span class="er">(</span><span class="st">&quot;Medicago HapMap SNP dendrogram&quot;</span><span class="kw">)</span></span></code></pre></div>
 </div>
 </div>
 <div id="gwas" class="section level2 tabset tabset-fade tabset-pills">
 <h2 class="tabset tabset-fade tabset-pills">GWAS</h2>
 <div id="filter-vcf" class="section level3">
 <h3>Filter VCF</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 16</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=24:00:00      </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=bigfilter.sh</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=50G </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bcftools</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/prune_snps/</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Download data</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://data.legumeinfo.org/Medicago/truncatula/diversity/A17.gnm5.div.Epstein_Burghardt_2022/medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primit</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">ives.2021-09-29.vcf.gz</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter data for samples with 2/3 real calls or more, high quality, and biallelic snps: </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">--force-samples</span> <span class="at">-S</span> all_samples.txt medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">.vcf.gz</span> <span class="dt">\</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">-e</span> <span class="st">&#39;F_PASS(GT==&quot;mis&quot;)&gt;=1/3&#39;</span> <span class="dt">\</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--min-alleles</span> 2 <span class="at">--max-alleles</span> 2 <span class="dt">\</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--types</span> snps <span class="dt">\</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--exclude-types</span> indels <span class="dt">\</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> filter <span class="at">-i</span> <span class="st">&#39;%QUAL&gt;900&#39;</span> <span class="dt">\</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--min-af</span> 0.05:minor <span class="at">-Ov</span> <span class="dt">\</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#ZIP and INDEX: </span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load htslib</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 16</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=24:00:00      </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=bigfilter.sh</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=50G </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bcftools</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/prune_snps/</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Download data</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://data.legumeinfo.org/Medicago/truncatula/diversity/A17.gnm5.div.Epstein_Burghardt_2022/medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primit</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">ives.2021-09-29.vcf.gz</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter data for samples with 2/3 real calls or more, high quality, and biallelic snps: </span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">--force-samples</span> <span class="at">-S</span> all_samples.txt medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">.vcf.gz</span> <span class="dt">\</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">-e</span> <span class="st">&#39;F_PASS(GT==&quot;mis&quot;)&gt;=1/3&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--min-alleles</span> 2 <span class="at">--max-alleles</span> 2 <span class="dt">\</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--types</span> snps <span class="dt">\</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--exclude-types</span> indels <span class="dt">\</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> filter <span class="at">-i</span> <span class="st">&#39;%QUAL&gt;900&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">|</span> <span class="ex">bcftools</span> view <span class="at">--min-af</span> 0.05:minor <span class="at">-Ov</span> <span class="dt">\</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#ZIP and INDEX: </span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load htslib</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz</span></code></pre></div>
 </div>
 <div id="prune-vcf" class="section level3">
 <h3>Prune VCF</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#PRUNE:</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 16</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=24:00:00      </span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=plinkandprune.sh</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=50G </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/prune_snps/</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ex">~/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz <span class="dt">\</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids <span class="dt">\</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> Plink</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load plink</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="ex">plink</span> <span class="at">--file</span> ~/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk <span class="dt">\</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">--indep-pairwise</span> 10 1 0.9 <span class="dt">\</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">--geno</span> 0.1 <span class="dt">\</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">--out</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf <span class="dt">\</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">--allow-extra-chr</span> <span class="dt">\</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">--make-founders</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert back to VCF</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="ex">~/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  <span class="dt">\</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">-keepDepth</span> <span class="dt">\</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                <span class="at">-includeSiteNamesInFile</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in <span class="dt">\</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf <span class="dt">\</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> VCF</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#PRUNE:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 16</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=24:00:00      </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=plinkandprune.sh</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=50G </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/prune_snps/</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">~/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz <span class="dt">\</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids <span class="dt">\</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> Plink</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load plink</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">plink</span> <span class="at">--file</span> ~/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk <span class="dt">\</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">--indep-pairwise</span> 10 1 0.9 <span class="dt">\</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">--geno</span> 0.1 <span class="dt">\</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">--out</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf <span class="dt">\</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">--allow-extra-chr</span> <span class="dt">\</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">--make-founders</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert back to VCF</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="ex">~/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  <span class="dt">\</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">-keepDepth</span> <span class="dt">\</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                <span class="at">-includeSiteNamesInFile</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in <span class="dt">\</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf <span class="dt">\</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> VCF</span></code></pre></div>
 </div>
 <div id="filter-for-gwas-samples" class="section level3">
 <h3>Filter for GWAS samples</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter for gwas: </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-r</span> MEDTR.GNM5.A17.MTRUNA17CHR1,MEDTR.GNM5.A17.MTRUNA17CHR2,MEDTR.GNM5.A17.MTRUNA17CHR3,MEDTR.GNM5.A17.MTRUNA17CHR4,MEDTR.GNM5.A17.MTRUNA17CHR5,MEDTR.GNM5.A17.MTRUNA17CHR6,MEDTR.GNM5.A17.MTRUNA17CHR7,MEDTR.GNM5.A17.MTRUNA17CHR8 <span class="at">-i</span> <span class="st">&#39;INFO/DP&gt;2000&#39;</span> <span class="at">-Ov</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf.gz <span class="op">&gt;</span> newhc_markers.gwas.vcf</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Marker format: </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/CM010648.1/1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010649.1/2/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010650.1/3/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010651.1/4/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010652.1/5/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010653.1/6/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010654.1/7/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010655.1/8/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR//g&#39;</span> newhc_markers.gwas.vcf <span class="op">&gt;</span>  mynewhc_markers.gwas.vcf</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Remove info field:</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> annotate <span class="at">--remove</span> INFO myhc_markers_.gwas.vcf <span class="at">--force</span>  <span class="op">&gt;</span> mynewhc_markers.gwas.noinfo.vcf</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter samples for GWAS:</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-S</span> /home/curti242/botki009/prune_snps/root_samples.txt mynewhc_markers.gwas.noinfo.vcf <span class="op">&gt;</span> hc_markers_286.vcf</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter for gwas: </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-r</span> MEDTR.GNM5.A17.MTRUNA17CHR1,MEDTR.GNM5.A17.MTRUNA17CHR2,MEDTR.GNM5.A17.MTRUNA17CHR3,MEDTR.GNM5.A17.MTRUNA17CHR4,MEDTR.GNM5.A17.MTRUNA17CHR5,MEDTR.GNM5.A17.MTRUNA17CHR6,MEDTR.GNM5.A17.MTRUNA17CHR7,MEDTR.GNM5.A17.MTRUNA17CHR8 <span class="at">-i</span> <span class="st">&#39;INFO/DP&gt;2000&#39;</span> <span class="at">-Ov</span> moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf.gz <span class="op">&gt;</span> newhc_markers.gwas.vcf</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Marker format: </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/CM010648.1/1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010649.1/2/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010650.1/3/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010651.1/4/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010652.1/5/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010653.1/6/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010654.1/7/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/CM010655.1/8/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR//g&#39;</span> newhc_markers.gwas.vcf <span class="op">&gt;</span>  mynewhc_markers.gwas.vcf</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Remove info field:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> annotate <span class="at">--remove</span> INFO myhc_markers_.gwas.vcf <span class="at">--force</span>  <span class="op">&gt;</span> mynewhc_markers.gwas.noinfo.vcf</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter samples for GWAS:</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-S</span> /home/curti242/botki009/prune_snps/root_samples.txt mynewhc_markers.gwas.noinfo.vcf <span class="op">&gt;</span> hc_markers_286.vcf</span></code></pre></div>
 </div>
 <div id="impute" class="section level3">
 <h3>Impute</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Impute</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Oz</span> <span class="at">--include</span> <span class="st">&#39;N_PASS(GT!=&quot;mis&quot;)&gt;0&#39;</span> phoma_hc_markers_286k.gwas.vcf <span class="dt">\</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">bcftools</span> +fixploidy <span class="at">-Oz</span> <span class="op">&gt;</span> im_root_hc_markers_286k.gwas.vcf.gz </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ~/software/beagle/beagle.22Jul22.46e.jar gt=im_root_hc_markers_286k.gwas.vcf.gz <span class="dt">\</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>out=imputed_root_hc_markers_286k.gwas<span class="dt">\</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>impute=true <span class="dt">\</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>gp=true <span class="dt">\</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ne=1000000 <span class="dt">\</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>err=0.0001 </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Impute</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> view <span class="at">-Oz</span> <span class="at">--include</span> <span class="st">&#39;N_PASS(GT!=&quot;mis&quot;)&gt;0&#39;</span> phoma_hc_markers_286k.gwas.vcf <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">bcftools</span> +fixploidy <span class="at">-Oz</span> <span class="op">&gt;</span> im_root_hc_markers_286k.gwas.vcf.gz </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ~/software/beagle/beagle.22Jul22.46e.jar gt=im_root_hc_markers_286k.gwas.vcf.gz <span class="dt">\</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>out=imputed_root_hc_markers_286k.gwas<span class="dt">\</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>impute=true <span class="dt">\</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>gp=true <span class="dt">\</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>ne=1000000 <span class="dt">\</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>err=0.0001 </span></code></pre></div>
 </div>
 <div id="run-vcf2gwas" class="section level3">
 <h3>Run vcf2gwas</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#GWAS</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">vcf2gwas</span> <span class="at">-v</span> ~/prune_snps/imputed_root_hc_markers_286k.gwas.vcf.gz  <span class="at">-pf</span> ~/root_gwas_PT_data.csv  <span class="at">-lmm</span> <span class="at">-p</span> 1 <span class="at">-o</span> ~/gwas</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#GWAS</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">vcf2gwas</span> <span class="at">-v</span> ~/prune_snps/imputed_root_hc_markers_286k.gwas.vcf.gz  <span class="at">-pf</span> ~/root_gwas_PT_data.csv  <span class="at">-lmm</span> <span class="at">-p</span> 1 <span class="at">-o</span> ~/gwas</span></code></pre></div>
 </div>
 </div>
 <div id="snpeff" class="section level2 tabset tabset-fade tabset-pills">
 <h2 class="tabset tabset-fade tabset-pills">SNPEff</h2>
 <div id="r-code" class="section level3">
 <h3>R code</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Make SNP file for SNPeff (not filtered for LD):</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">plink</span> <span class="at">--file</span> /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk <span class="dt">\</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">--indep-pairwise</span> 100 10 0.99 <span class="dt">\</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">--geno</span> 0.1 <span class="dt">\</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">--out</span> noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf <span class="dt">\</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">--allow-extra-chr</span> <span class="dt">\</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">--make-founders</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Make SNP file for SNPeff (not filtered for LD):</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">plink</span> <span class="at">--file</span> /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk <span class="dt">\</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">--indep-pairwise</span> 100 10 0.99 <span class="dt">\</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">--geno</span> 0.1 <span class="dt">\</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">--out</span> noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf <span class="dt">\</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">--allow-extra-chr</span> <span class="dt">\</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">--make-founders</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert to VCF</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/curti242/botki009/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  <span class="dt">\</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">-includeSiteNamesInFile</span> /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in <span class="dt">\</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="dt">\</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> VCF</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Rm info </span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> annotate <span class="at">--remove</span> INFO <span class="at">--force</span> noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz <span class="op">&gt;</span> noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR1/CM010648.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR2/CM010649.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR3/CM010650.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR4/CM010651.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR5/CM010652.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR6/CM010653.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR7/CM010654.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR8/CM010655.1/g&#39;</span> noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Zip file</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Only keep Chr 1-8 SNPs</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;MEDTR.GNM5.A17.MTRUNA17*&#39;</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co">#Zip file</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="co">#SnpEff</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load java/jdk-11.0.2</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> /home/curti242/botki009/software/snpEff/snpEff.jar eff GCA_003473485.2_MtrunA17r5.0-ANR_genomic imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="at">-s</span> stats_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr <span class="op">&gt;</span> SNPEFF_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span></code></pre></div>
+</div>
+</div>
+<div id="grna-design" class="section level2 tabset tabset-fade tabset-pills">
+<h2 class="tabset tabset-fade tabset-pills">gRNA design</h2>
+<div id="steps" class="section level3">
+<h3>Steps</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A custom python script to generate gRNA primers from known gRNA target sequences </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1.</span> Make a 6 line input text file <span class="er">(</span><span class="ex">No</span> spaces before or after text, PAM optional<span class="kw">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Input</span> file example:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">----------------------</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Gene_ID</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span>gRNA_name</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ACGATGATGATGACAAGGAC</span> AGG</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Gene_ID</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span>gRNA_name</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">CAGTAGTACCCAGTATGACA</span> TGG</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">------------------------</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ex">2.</span> Download the grna_primers.py python script: </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ex">3.</span> Run the python script from command line:</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>   <span class="ex">python</span> grna_primers.py </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>   <span class="ex">[Enter</span> input file name on command line]</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="ex">4.</span> Output: </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span> file named <span class="st">&quot;gRNA_primers_gene_gRNA_date&quot;</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file</span> contains: primers for each gRNA for IDT Bulk Input primer ordering</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span> file named <span class="st">&quot;gRNA_primer_TAG_gene_gRNA_date&quot;</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file</span> contains: gRNA name, gene, primers, and TAG insert sequence for Geneious Prime vector assembly. </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="ex">5.</span> Evaluate off targets with Cas-OFFinder v2.4</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="ex">./cas-offinder</span> input.txt G out.txt</span></code></pre></div>
+</div>
+<div id="grna_primers.py" class="section level3">
+<h3>grna_primers.py</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">   #Open infile </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">infile_name= input(&quot;Enter input file name:  &quot;)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">infile= open(infile_name,&#39;</span><span class="ex">rt</span><span class="st">&#39;) </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">    #Get date for output file name </span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">import time</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">date= time.strftime(&quot;%Y%m%d&quot;)</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">date=date[0:8]</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">    #Make lists to fill</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">name=[]</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">grna=[]</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">rc=[]</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">revcomp=[]</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="st">c=[]</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="st">comp=[]</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="st">f_primer=[]</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="st">r_primer=[]</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="st">tag_insert=[]</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="st">genename=[]</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="st">info=[]</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="st">print(&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot; &quot;,&quot;Computing primer sequences...&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;File created&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="st">    #Loop through infile and put into in lists</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="st">for line in infile:</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="st">    line = line.rstrip()</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="st">        #If header line has &gt;, then save as gRNA name </span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="st">    if line[0] == &quot;&gt;&quot;:</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="st">        line.split(&quot;&gt;&quot;)</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="st">        name.append(line[1:])</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="st">    if line[0] != &quot;&gt;&quot;:</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="st">        info.append(line[0:]) </span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="st">    #if line is DNA then save as gRNA sequence </span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="st">for item in info: </span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="st">    count= item.count(&quot;A&quot;)+item.count(&quot;C&quot;)+item.count(&quot;G&quot;)+item.count(&quot;T&quot;)</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="st">    if count &gt; 10:</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="st">        grna.append(item) </span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="st">        #If not then save as gene name </span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="st">    else:</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="st">        genename.append(item)</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="st">    #Open outfile</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot; &quot;,&quot;Computing TAG insert sequences...&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;File created&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="st">outfile=open(&quot;gRNA_primers_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="st">outfile2=open(&quot;gRNA_primer_TAG_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="st">outfile3=open(&quot;gRNA_TAG_inserts_&quot;+genename[0]+&quot;_&quot;+name[0]+&quot;_&quot;+date,&#39;</span><span class="ex">wt</span><span class="st">&#39;)</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="st">for ind, seq in enumerate(grna): </span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="st">    seq</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="st">    seq=seq.split(&quot; &quot;)</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="st">    seq=seq[0]</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="st">        #Complement the gRNA sequence</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="st">    c=seq.translate(str.maketrans(&quot;ACGT&quot;,&quot;TGCA&quot;))</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="st">    comp.append(c)</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="st">    f_primer.append(&quot;tgca&quot;+seq)</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="st">        #Reverse the complement of gRNA sequence</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="st">    rc= c[::-1]</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="st">    revcomp.append(rc)</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="st">    r_primer.append(&quot;aaac&quot;+rc)</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="st">        #TAG inserts for gRNA sequence</span></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="st">    tag_insert.append(&quot;TCGTCTCCtgca&quot;+seq+&quot;gtttTGAGACG&quot;)</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="st">        #Make primer and TAG file </span></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&quot;Primers and TAG insert for target&quot;,&quot;[&quot;+genename[ind]+&quot;]:&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;&gt;&quot;+name[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;gRNA sequence &quot;, \</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="st">            &#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&quot; &quot;,&quot; &quot;, grna[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-F&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,f_primer[ind],\</span></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="st">                  &#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-R&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,r_primer[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,&quot;TAG insert&quot;,&quot; &quot;,\</span></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="st">                      tag_insert[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,file=outfile2) </span></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a><span class="st">        #Make primer  file     </span></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="st">    print(name[ind]+&quot;-F&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,f_primer[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,name[ind]+&quot;-R&quot;,&#39;</span><span class="ex">\t</span><span class="st">&#39;,r_primer[ind],file=outfile) </span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&quot;&gt;&quot;+name[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,tag_insert[ind],&#39;</span><span class="ex">\n</span><span class="st">&#39;,file=outfile3) </span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="st">print(&quot;Done!&quot;,&#39;</span><span class="ex">\n</span><span class="st">&#39;)</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="st">infile.close()</span></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a><span class="st">outfile.close()</span></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="st">outfile2.close()   </span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;&#39;&#39;</span></span></code></pre></div>
+</div>
+<div id="evaluate-off-targets" class="section level3">
+<h3>Evaluate off targets</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#make 4 line input text file (input.txt)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">----------------------------------</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">full/path/to/r108/genome</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">NNNNNNNNNNNNNNNNNNNNNGG</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TGTAACATCAGGGTATGAGG</span>    5</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">CCCATCACAGAATCCCACAG</span>    5</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">----------------------------------</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert to VCF</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/curti242/botki009/software/tassel/tassel-5-standalone/run_pipeline.pl</span> <span class="at">-Xmx40g</span> <span class="at">-vcf</span> /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  <span class="dt">\</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">-sortPositions</span> <span class="dt">\</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">-includeSiteNamesInFile</span> /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in <span class="dt">\</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">-export</span> /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="dt">\</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">-exportType</span> VCF</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Rm info </span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> annotate <span class="at">--remove</span> INFO <span class="at">--force</span> noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz <span class="op">&gt;</span> noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR1/CM010648.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR2/CM010649.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR3/CM010650.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR4/CM010651.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR5/CM010652.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR6/CM010653.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR7/CM010654.1/g&#39;</span> <span class="at">-e</span> <span class="st">&#39;s/MEDTR.GNM5.A17.MTRUNA17CHR8/CM010655.1/g&#39;</span> noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Zip file</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Only keep Chr 1-8 SNPs</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;MEDTR.GNM5.A17.MTRUNA17*&#39;</span> snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co">#Zip file</span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="ex">bgzip</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="op">&gt;</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="co">#SnpEff</span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load java/jdk-11.0.2</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> /home/curti242/botki009/software/snpEff/snpEff.jar eff GCA_003473485.2_MtrunA17r5.0-ANR_genomic imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf <span class="at">-s</span> stats_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr <span class="op">&gt;</span> SNPEFF_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf</span></code></pre></div>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#run program</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">./cas-offinder</span> input.txt G out.txt</span></code></pre></div>
 </div>
 </div>
-<div id="diversity" class="section level2 tabset tabset-fade tabset-pills">
-<h2 class="tabset tabset-fade tabset-pills">Diversity</h2>
-<div id="pca" class="section level3">
-<h3>PCA</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Data</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dist_populations</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/dataForPCA.mdist&quot;</span><span class="ex">,</span> header=FALSE<span class="kw">)</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Acc</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">famInd</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/id&quot;</span><span class="ex">,</span> header=T<span class="kw">)</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Origin</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="ex">famOrigin</span><span class="op">&lt;</span>-read.table<span class="er">(</span><span class="st">&quot;/Users/jakebotkin/Desktop/GWAS/pca/origin&quot;</span><span class="ex">,header=T</span><span class="kw">)</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#CMDscale PCA</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mds_populations</span><span class="op">&lt;</span>-cmdscale<span class="er">(</span><span class="ex">dist_populations,eig=TRUE,</span> 5<span class="kw">)</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="ex">?cmdscale</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#EigenVectors</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="ex">eigenvec_pop</span><span class="op">&lt;</span>- cbind<span class="er">(</span><span class="ex">famOrigin,famInd,mds_populations</span><span class="va">$points</span><span class="kw">)</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#Proportion of variation captured by each vector</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="ex">eigen_percent</span><span class="op">&lt;</span>- round<span class="er">(</span><span class="kw">((</span><span class="va">mds_populations$eig</span><span class="op">/</span><span class="va">sum</span>(<span class="va">mds_populations$eig</span>))<span class="op">*</span><span class="dv">100</span>)<span class="kw">,</span><span class="dv">2</span>)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="va">library</span>(<span class="va">tidyverse</span>)</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop</span>)<span class="op">+</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA of M.tuncatula HapMap accessions&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()<span class="op">+</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  <span class="va">scale_y_reverse</span>()<span class="op">+</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="va">scale_x_reverse</span>()</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">drop</span> <span class="va">plants</span> <span class="va">with</span> <span class="va">no</span> <span class="va">origin</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span><span class="op">&lt;-</span><span class="va">subset</span>(<span class="va">eigenvec_pop</span><span class="kw">,</span> <span class="va">origin</span><span class="op">!=</span><span class="st">&quot;Not_avail&quot;</span>)</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span> <span class="va">on</span> <span class="va">existing</span> <span class="va">origins</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop2</span>)<span class="op">+</span></span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop2</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop2</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA plot of M.tuncatula HapMap accession SNP subset&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()</span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop2</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop3</span><span class="op">&lt;-</span><span class="va">subset</span>(<span class="va">eigenvec_pop2</span><span class="kw">,</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Morocco&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Algeria&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Spain&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;France&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span> <span class="st">&quot;Greece&quot;</span> <span class="op">|</span> <span class="va">origin</span><span class="op">==</span><span class="st">&quot;Tunisia&quot;</span>)</span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="va">eigenvec_pop3</span></span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="er">#</span><span class="va">PCA</span> <span class="va">on</span> <span class="va">major</span> <span class="va">origins</span></span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span><span class="op">&lt;-</span><span class="va">ggplot</span>(<span class="va">data</span><span class="op">=</span><span class="va">eigenvec_pop3</span>)<span class="op">+</span></span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>  <span class="va">geom_point</span>(<span class="va">mapping</span><span class="op">=</span><span class="va">aes</span>(<span class="va">x</span><span class="op">=</span><span class="va">eigenvec_pop3</span>$<span class="kw">`</span><span class="ex">1</span><span class="kw">`,</span> <span class="va">y</span><span class="op">=</span><span class="va">eigenvec_pop3</span>$<span class="kw">`</span><span class="ex">2</span><span class="kw">`,</span> <span class="va">color</span><span class="op">=</span><span class="va">origin</span>)<span class="kw">,</span> <span class="va">show</span>.<span class="va">legend</span><span class="op">=</span><span class="va">TRUE</span>)<span class="op">+</span></span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>  <span class="va">ylab</span>(<span class="st">&quot;Principal Component 2&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>  <span class="va">xlab</span>(<span class="st">&quot;Principal Component 1&quot;</span>)<span class="op">+</span></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>  <span class="va">ggtitle</span>(<span class="st">&quot;PCA plot of M.tuncatula HapMap accession SNP subset&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>  <span class="va">theme_minimal</span>()</span>
-<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="va">pca</span></span></code></pre></div>
+<div id="amplicon-sequencing" class="section level2 tabset tabset-fade tabset-pills">
+<h2 class="tabset tabset-fade tabset-pills">Amplicon sequencing</h2>
+<div id="base-calling" class="section level3">
+<h3>Base-calling</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --tmp=2g</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -p v100</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --gres=gpu:v100:1</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=dorado.sh</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load dorado/0.5.1</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#base calling</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="ex">dorado</span> basecaller hac pod5/ <span class="op">&gt;</span> all_reads.dorado.bam <span class="dt">\</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>--kit-name SQK-RBK114-96 <span class="dt">\</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>--recursive</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#####################</span></span></code></pre></div>
 </div>
-<div id="admixture" class="section level3">
-<h3>Admixture</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Addmixture</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">tbl2=</span>read.table<span class="kw">(</span><span class="st">&quot;my.vcf.gz.2.Q&quot;</span><span class="kw">)</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">barplot</span><span class="er">(</span><span class="ex">t</span><span class="er">(</span><span class="ex">as.matrix</span><span class="er">(</span><span class="ex">tbl2</span><span class="kw">))</span><span class="ex">,</span> col=c<span class="er">(</span><span class="st">&quot;lightseagreen&quot;</span><span class="ex">,</span> <span class="st">&quot;lightcoral&quot;</span><span class="kw">)</span><span class="ex">,</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>          <span class="va">xlab=</span><span class="st">&quot;Accessions&quot;</span>, <span class="va">ylab=</span><span class="st">&quot;Ancestry&quot;</span>, <span class="va">border=</span>NA<span class="er">)</span></span></code></pre></div>
+<div id="de-multiplex" class="section level3">
+<h3>De-multiplex</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --tmp=2g</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -p v100</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --gres=gpu:v100:1</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=demux.sh</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load dorado/0.5.1 </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="ex">dorado</span> demux <span class="at">--output-dir</span> ~/nanopore/ <span class="at">--emit-fastq</span> <span class="at">--kit-name</span> SQK-RBK114-96 all_reads.dorado.bam</span></code></pre></div>
 </div>
-<div id="snp-dendrogram" class="section level3">
-<h3>SNP dendrogram</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">gdsfmt</span><span class="kw">)</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ggplot2</span><span class="kw">)</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ape</span><span class="kw">)</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">vcfR</span><span class="kw">)</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">tidyr</span><span class="kw">)</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">SNPRelate</span><span class="kw">)</span> </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ggtree</span><span class="kw">)</span></span>
+<div id="filter-reads" class="section level3">
+<h3>Filter reads</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 5</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00      </span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=nanofilt.sh</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=1G  </span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Get data</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">setwd</span><span class="er">(</span><span class="st">&quot;~/SNP_tree_HapMap&quot;</span><span class="kw">)</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ex">vcf.fn</span> <span class="op">&lt;</span>- <span class="st">&quot;mynewhc_markers.noinfo.vcf&quot;</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#VCF to GDS</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="ex">snpgdsVCF2GDS</span><span class="er">(</span><span class="ex">vcf.fn,</span> <span class="st">&quot;test1.gds&quot;</span>, method=<span class="st">&quot;biallelic.only&quot;</span><span class="kw">)</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="ex">snpgdsSummary</span><span class="er">(</span><span class="st">&quot;test1.gds&quot;</span><span class="kw">)</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#location of GDS: test1.gds </span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">### Preparing the data so it is formatted correctly to create a dissimilarity matrix.</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="ex">gds_formatted</span> <span class="op">&lt;</span>- snpgdsOpen<span class="er">(</span><span class="st">&quot;test1.gds&quot;</span><span class="kw">)</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="ex">set.seed</span><span class="er">(</span><span class="ex">100</span><span class="kw">)</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Identity-By-State (IBS) analysis on genotypes</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="ex">ibs_Exon2010_03</span> <span class="op">&lt;</span>- snpgdsHCluster<span class="er">(</span><span class="ex">snpgdsIBS</span><span class="er">(</span><span class="ex">gds_formatted,num.thread=2,</span> autosome.only=FALSE<span class="kw">))</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine groups by permutation</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="ex">rvExon2010_03</span> <span class="op">&lt;</span>- snpgdsCutTree<span class="er">(</span><span class="ex">ibs_Exon2010_03</span><span class="kw">)</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Saving the dendrograms to new Variables</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="ex">treeExon2010_03</span> = rvExon2010_03<span class="va">$dendrogram</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="va">SNPTree=</span> <span class="ex">plot</span><span class="er">(</span><span class="ex">rvExon2010_03</span><span class="va">$dendrogram</span><span class="ex">,horiz=T,</span> main =<span class="st">&quot;Medicago HapMap SNP dendrogram&quot;</span> <span class="kw">)</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co">#plot circular tree</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="ex">ggtree</span><span class="er">(</span><span class="ex">as.phylo</span><span class="er">(</span><span class="ex">as.hclust</span><span class="er">(</span><span class="ex">treeExon2010_03</span><span class="kw">))</span><span class="ex">,</span> layout=<span class="st">&quot;circular&quot;</span>,color=<span class="st">&#39;darkgreen&#39;</span>, branch.length=<span class="st">&quot;branch.length&quot;</span><span class="kw">)</span><span class="ex">+</span> geom_tiplab<span class="er">(</span><span class="va">size=</span>2.5, <span class="ex">aes</span><span class="er">(</span><span class="va">angle=</span>angle<span class="kw">))</span><span class="ex">+</span> ggtitle<span class="er">(</span><span class="st">&quot;Medicago HapMap SNP dendrogram&quot;</span><span class="kw">)</span></span></code></pre></div>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load python</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#location of list file with sample names</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="va">LINE=$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$SLURM_ARRAY_TASK_ID</span><span class="st">&quot;</span>p samples.txt<span class="va">)</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#filter reads for (90% accurate)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="ex">filtlong</span> <span class="at">--max_length</span> 1000 <span class="at">--min_length</span> 100 <span class="at">--min_mean_q</span> 99 SQK-RBK114-96_<span class="va">${LINE}</span>.fastq <span class="op">&gt;</span> <span class="va">${LINE}</span>.q90.ts.fastq</span></code></pre></div>
 </div>
 </div>
 <div id="genome-assembly" class="section level2 tabset tabset-fade tabset-pills">

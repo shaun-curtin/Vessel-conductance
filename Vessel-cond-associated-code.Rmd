@@ -52,6 +52,284 @@ File location:
 https://github.com/shaun-curtin/Vessel-conductance/tree/main
 ```
 
+## Diversity {.tabset .tabset-fade .tabset-pills}
+
+### PCA
+```{bash,k234657891, eval=FALSE}
+#Data
+dist_populations<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/dataForPCA.mdist", header=FALSE)
+
+#Acc
+famInd<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/id", header=T)
+#Origin
+famOrigin<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/origin",header=T)
+
+#CMDscale PCA
+mds_populations<-cmdscale(dist_populations,eig=TRUE, 5)
+?cmdscale
+#EigenVectors
+eigenvec_pop<- cbind(famOrigin,famInd,mds_populations$points)
+
+#Proportion of variation captured by each vector
+eigen_percent<- round(((mds_populations$eig/sum(mds_populations$eig))*100),2)
+
+#PCA
+library(tidyverse)
+pca<-ggplot(data=eigenvec_pop)+
+  geom_point(mapping=aes(x=eigenvec_pop$`1`, y=eigenvec_pop$`2`, color=origin), show.legend=TRUE)+
+  ylab("Principal Component 2") +
+  xlab("Principal Component 1")+
+  ggtitle("PCA of M.tuncatula HapMap accessions") +
+  theme_minimal()+
+  scale_y_reverse()+
+  scale_x_reverse()
+pca
+
+#drop plants with no origin
+eigenvec_pop
+eigenvec_pop2<-subset(eigenvec_pop, origin!="Not_avail")
+eigenvec_pop2
+
+#PCA on existing origins
+pca<-ggplot(data=eigenvec_pop2)+
+  geom_point(mapping=aes(x=eigenvec_pop2$`1`, y=eigenvec_pop2$`2`, color=origin), show.legend=TRUE)+
+  ylab("Principal Component 2") +
+  xlab("Principal Component 1")+
+  ggtitle("PCA plot of M.tuncatula HapMap accession SNP subset") +
+  theme_minimal()
+pca
+
+eigenvec_pop2
+eigenvec_pop3<-subset(eigenvec_pop2, origin=="Morocco" | origin=="Algeria" | origin=="Spain" | origin=="France" | origin== "Greece" | origin=="Tunisia")
+eigenvec_pop3
+
+#PCA on major origins
+pca<-ggplot(data=eigenvec_pop3)+
+  geom_point(mapping=aes(x=eigenvec_pop3$`1`, y=eigenvec_pop3$`2`, color=origin), show.legend=TRUE)+
+  ylab("Principal Component 2") +
+  xlab("Principal Component 1")+
+  ggtitle("PCA plot of M.tuncatula HapMap accession SNP subset") +
+  theme_minimal()
+pca
+```
+
+
+### Admixture
+```{bash,k1q345367789, eval=FALSE}
+# Addmixture
+tbl2=read.table("my.vcf.gz.2.Q")
+
+barplot(t(as.matrix(tbl2)), col=c("lightseagreen", "lightcoral"),
+          xlab="Accessions", ylab="Ancestry", border=NA)
+
+```
+
+### SNP dendrogram
+```{bash,k1536456787789, eval=FALSE}
+library(gdsfmt)
+library(ggplot2)
+library(ape)
+library(vcfR)
+library(tidyr)
+library(SNPRelate) 
+library(ggtree)
+
+#Get data
+setwd("~/SNP_tree_HapMap")
+vcf.fn <- "mynewhc_markers.noinfo.vcf"
+
+#VCF to GDS
+snpgdsVCF2GDS(vcf.fn, "test1.gds", method="biallelic.only")
+snpgdsSummary("test1.gds")
+#location of GDS: test1.gds 
+
+### Preparing the data so it is formatted correctly to create a dissimilarity matrix.
+gds_formatted <- snpgdsOpen("test1.gds")
+set.seed(100)
+
+#Identity-By-State (IBS) analysis on genotypes
+ibs_Exon2010_03 <- snpgdsHCluster(snpgdsIBS(gds_formatted,num.thread=2, autosome.only=FALSE))
+
+#Determine groups by permutation
+rvExon2010_03 <- snpgdsCutTree(ibs_Exon2010_03)
+
+#Saving the dendrograms to new Variables
+treeExon2010_03 = rvExon2010_03$dendrogram
+
+#Plot
+SNPTree= plot(rvExon2010_03$dendrogram,horiz=T, main ="Medicago HapMap SNP dendrogram" )
+
+#plot circular tree
+ggtree(as.phylo(as.hclust(treeExon2010_03)), layout="circular",color='darkgreen', branch.length="branch.length")+ geom_tiplab(size=2.5, aes(angle=angle))+ ggtitle("Medicago HapMap SNP dendrogram")
+
+
+```
+
+
+## GWAS {.tabset .tabset-fade .tabset-pills}
+
+### Filter VCF
+```{bash,k1785924, eval=FALSE}
+#!/bin/bash -l
+#SBATCH -N 1
+#SBATCH -n 16
+#SBATCH --time=24:00:00      
+#SBATCH --mail-type=ALL
+#SBATCH --job-name=bigfilter.sh
+#SBATCH --mem=50G 
+
+module load bcftools
+cd ~/prune_snps/
+
+#Download data
+wget https://data.legumeinfo.org/Medicago/truncatula/diversity/A17.gnm5.div.Epstein_Burghardt_2022/medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primit
+ives.2021-09-29.vcf.gz
+
+#Filter data for samples with 2/3 real calls or more, high quality, and biallelic snps: 
+bcftools view --force-samples -S all_samples.txt medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29
+.vcf.gz \
+    | bcftools view -e 'F_PASS(GT=="mis")>=1/3' \
+    | bcftools view --min-alleles 2 --max-alleles 2 \
+    | bcftools view --types snps \
+    | bcftools view --exclude-types indels \
+    | bcftools filter -i '%QUAL>900' \
+    | bcftools view --min-af 0.05:minor -Ov \
+    > big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz
+
+
+#ZIP and INDEX: 
+module load htslib
+bgzip big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf
+tabix big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz
+
+
+```
+
+
+### Prune VCF
+```{bash,k12345654, eval=FALSE}
+#PRUNE:
+#!/bin/bash -l
+#SBATCH -N 1
+#SBATCH -n 16
+#SBATCH --time=24:00:00      
+#SBATCH --mail-type=ALL
+#SBATCH --job-name=plinkandprune.sh
+#SBATCH --mem=50G 
+
+cd ~/prune_snps/
+
+~/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz \
+                -sortPositions \
+                -export big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids \
+                -exportType Plink
+
+module load plink
+plink --file ~/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk \
+      --indep-pairwise 10 1 0.9 \
+      --geno 0.1 \
+      --out moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf \
+      --allow-extra-chr \
+      --make-founders
+
+
+
+# Convert back to VCF
+~/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  \
+                -sortPositions \
+                -keepDepth \
+                -includeSiteNamesInFile moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in \
+                -export moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf \
+                -exportType VCF
+
+```
+
+### Filter for GWAS samples
+```{bash,k1567435, eval=FALSE}
+#Filter for gwas: 
+bcftools view -r MEDTR.GNM5.A17.MTRUNA17CHR1,MEDTR.GNM5.A17.MTRUNA17CHR2,MEDTR.GNM5.A17.MTRUNA17CHR3,MEDTR.GNM5.A17.MTRUNA17CHR4,MEDTR.GNM5.A17.MTRUNA17CHR5,MEDTR.GNM5.A17.MTRUNA17CHR6,MEDTR.GNM5.A17.MTRUNA17CHR7,MEDTR.GNM5.A17.MTRUNA17CHR8 -i 'INFO/DP>2000' -Ov moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf.gz > newhc_markers.gwas.vcf
+
+
+#Marker format: 
+sed -e 's/CM010648.1/1/g' -e 's/CM010649.1/2/g' -e 's/CM010650.1/3/g' -e 's/CM010651.1/4/g' -e 's/CM010652.1/5/g' -e 's/CM010653.1/6/g' -e 's/CM010654.1/7/g' -e 's/CM010655.1/8/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR//g' newhc_markers.gwas.vcf >  mynewhc_markers.gwas.vcf
+
+#Remove info field:
+bcftools annotate --remove INFO myhc_markers_.gwas.vcf --force  > mynewhc_markers.gwas.noinfo.vcf
+
+#Filter samples for GWAS:
+bcftools view -S /home/curti242/botki009/prune_snps/root_samples.txt mynewhc_markers.gwas.noinfo.vcf > hc_markers_286.vcf
+
+
+```
+
+### Impute
+```{bash,k15367456789, eval=FALSE}
+# Impute
+bcftools view -Oz --include 'N_PASS(GT!="mis")>0' phoma_hc_markers_286k.gwas.vcf \
+| bcftools +fixploidy -Oz > im_root_hc_markers_286k.gwas.vcf.gz 
+
+java -jar ~/software/beagle/beagle.22Jul22.46e.jar gt=im_root_hc_markers_286k.gwas.vcf.gz \
+out=imputed_root_hc_markers_286k.gwas\
+impute=true \
+gp=true \
+ne=1000000 \
+err=0.0001 
+
+```
+
+### Run vcf2gwas
+```{bash,k153675647789, eval=FALSE}
+#GWAS
+vcf2gwas -v ~/prune_snps/imputed_root_hc_markers_286k.gwas.vcf.gz  -pf ~/root_gwas_PT_data.csv  -lmm -p 1 -o ~/gwas
+
+```
+
+
+## SNPEff {.tabset .tabset-fade .tabset-pills}
+
+### R code
+```{bash,k15367789, eval=FALSE}
+#Make SNP file for SNPeff (not filtered for LD):
+plink --file /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk \
+      --indep-pairwise 100 10 0.99 \
+      --geno 0.1 \
+      --out noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf \
+      --allow-extra-chr \
+      --make-founders
+
+
+#Convert to VCF
+/home/curti242/botki009/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  \
+                -sortPositions \
+                -includeSiteNamesInFile /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in \
+                -export /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf \
+                -exportType VCF
+
+
+#Rm info 
+bcftools annotate --remove INFO --force noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz > noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
+
+sed -e 's/MEDTR.GNM5.A17.MTRUNA17CHR1/CM010648.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR2/CM010649.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR3/CM010650.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR4/CM010651.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR5/CM010652.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR6/CM010653.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR7/CM010654.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR8/CM010655.1/g' noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
+
+#Zip file
+bgzip snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
+tabix snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
+
+#Only keep Chr 1-8 SNPs
+grep -v 'MEDTR.GNM5.A17.MTRUNA17*' snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
+
+#Zip file
+bgzip snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
+tabix snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
+
+#SnpEff
+module load java/jdk-11.0.2
+java -jar /home/curti242/botki009/software/snpEff/snpEff.jar eff GCA_003473485.2_MtrunA17r5.0-ANR_genomic imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf -s stats_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr > SNPEFF_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
+```
+
+
+
+
 
 ## gRNA design  {.tabset .tabset-fade .tabset-pills}
 
@@ -241,282 +519,6 @@ LINE=$(sed -n "$SLURM_ARRAY_TASK_ID"p samples.txt)
 
 #filter reads for (90% accurate)
 filtlong --max_length 1000 --min_length 100 --min_mean_q 99 SQK-RBK114-96_${LINE}.fastq > ${LINE}.q90.ts.fastq
-```
-
-## GWAS {.tabset .tabset-fade .tabset-pills}
-
-### Filter VCF
-```{bash,k1785924, eval=FALSE}
-#!/bin/bash -l
-#SBATCH -N 1
-#SBATCH -n 16
-#SBATCH --time=24:00:00      
-#SBATCH --mail-type=ALL
-#SBATCH --job-name=bigfilter.sh
-#SBATCH --mem=50G 
-
-module load bcftools
-cd ~/prune_snps/
-
-#Download data
-wget https://data.legumeinfo.org/Medicago/truncatula/diversity/A17.gnm5.div.Epstein_Burghardt_2022/medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primit
-ives.2021-09-29.vcf.gz
-
-#Filter data for samples with 2/3 real calls or more, high quality, and biallelic snps: 
-bcftools view --force-samples -S all_samples.txt medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29
-.vcf.gz \
-    | bcftools view -e 'F_PASS(GT=="mis")>=1/3' \
-    | bcftools view --min-alleles 2 --max-alleles 2 \
-    | bcftools view --types snps \
-    | bcftools view --exclude-types indels \
-    | bcftools filter -i '%QUAL>900' \
-    | bcftools view --min-af 0.05:minor -Ov \
-    > big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz
-
-
-#ZIP and INDEX: 
-module load htslib
-bgzip big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf
-tabix big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz
-
-
-```
-
-
-### Prune VCF
-```{bash,k12345654, eval=FALSE}
-#PRUNE:
-#!/bin/bash -l
-#SBATCH -N 1
-#SBATCH -n 16
-#SBATCH --time=24:00:00      
-#SBATCH --mail-type=ALL
-#SBATCH --job-name=plinkandprune.sh
-#SBATCH --mem=50G 
-
-cd ~/prune_snps/
-
-~/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz \
-                -sortPositions \
-                -export big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids \
-                -exportType Plink
-
-module load plink
-plink --file ~/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk \
-      --indep-pairwise 10 1 0.9 \
-      --geno 0.1 \
-      --out moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf \
-      --allow-extra-chr \
-      --make-founders
-
-
-
-# Convert back to VCF
-~/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  \
-                -sortPositions \
-                -keepDepth \
-                -includeSiteNamesInFile moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in \
-                -export moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf \
-                -exportType VCF
-
-```
-
-### Filter for GWAS samples
-```{bash,k1567435, eval=FALSE}
-#Filter for gwas: 
-bcftools view -r MEDTR.GNM5.A17.MTRUNA17CHR1,MEDTR.GNM5.A17.MTRUNA17CHR2,MEDTR.GNM5.A17.MTRUNA17CHR3,MEDTR.GNM5.A17.MTRUNA17CHR4,MEDTR.GNM5.A17.MTRUNA17CHR5,MEDTR.GNM5.A17.MTRUNA17CHR6,MEDTR.GNM5.A17.MTRUNA17CHR7,MEDTR.GNM5.A17.MTRUNA17CHR8 -i 'INFO/DP>2000' -Ov moreprunned_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.final.vcf.gz > newhc_markers.gwas.vcf
-
-
-#Marker format: 
-sed -e 's/CM010648.1/1/g' -e 's/CM010649.1/2/g' -e 's/CM010650.1/3/g' -e 's/CM010651.1/4/g' -e 's/CM010652.1/5/g' -e 's/CM010653.1/6/g' -e 's/CM010654.1/7/g' -e 's/CM010655.1/8/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR//g' newhc_markers.gwas.vcf >  mynewhc_markers.gwas.vcf
-
-#Remove info field:
-bcftools annotate --remove INFO myhc_markers_.gwas.vcf --force  > mynewhc_markers.gwas.noinfo.vcf
-
-#Filter samples for GWAS:
-bcftools view -S /home/curti242/botki009/prune_snps/root_samples.txt mynewhc_markers.gwas.noinfo.vcf > hc_markers_286.vcf
-
-
-```
-
-### Impute
-```{bash,k15367456789, eval=FALSE}
-# Impute
-bcftools view -Oz --include 'N_PASS(GT!="mis")>0' phoma_hc_markers_286k.gwas.vcf \
-| bcftools +fixploidy -Oz > im_root_hc_markers_286k.gwas.vcf.gz 
-
-java -jar ~/software/beagle/beagle.22Jul22.46e.jar gt=im_root_hc_markers_286k.gwas.vcf.gz \
-out=imputed_root_hc_markers_286k.gwas\
-impute=true \
-gp=true \
-ne=1000000 \
-err=0.0001 
-
-```
-
-### Run vcf2gwas
-```{bash,k153675647789, eval=FALSE}
-#GWAS
-vcf2gwas -v ~/prune_snps/imputed_root_hc_markers_286k.gwas.vcf.gz  -pf ~/root_gwas_PT_data.csv  -lmm -p 1 -o ~/gwas
-
-```
-
-
-## SNPEff {.tabset .tabset-fade .tabset-pills}
-
-### R code
-```{bash,k15367789, eval=FALSE}
-#Make SNP file for SNPeff (not filtered for LD):
-plink --file /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz.marker-ids.plk \
-      --indep-pairwise 100 10 0.99 \
-      --geno 0.1 \
-      --out noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf \
-      --allow-extra-chr \
-      --make-founders
-
-
-#Convert to VCF
-/home/curti242/botki009/software/tassel/tassel-5-standalone/run_pipeline.pl -Xmx40g -vcf /home/curti242/botki009/prune_snps/big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.gz  \
-                -sortPositions \
-                -includeSiteNamesInFile /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.vcf.prune.in \
-                -export /home/curti242/botki009/prune_snps/noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf \
-                -exportType VCF
-
-
-#Rm info 
-bcftools annotate --remove INFO --force noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz > noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
-
-sed -e 's/MEDTR.GNM5.A17.MTRUNA17CHR1/CM010648.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR2/CM010649.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR3/CM010650.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR4/CM010651.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR5/CM010652.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR6/CM010653.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR7/CM010654.1/g' -e 's/MEDTR.GNM5.A17.MTRUNA17CHR8/CM010655.1/g' noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
-
-#Zip file
-bgzip snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
-tabix snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
-
-#Only keep Chr 1-8 SNPs
-grep -v 'MEDTR.GNM5.A17.MTRUNA17*' snpeff_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
-
-#Zip file
-bgzip snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf > snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
-tabix snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf.gz
-
-#SnpEff
-module load java/jdk-11.0.2
-java -jar /home/curti242/botki009/software/snpEff/snpEff.jar eff GCA_003473485.2_MtrunA17r5.0-ANR_genomic imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf -s stats_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr > SNPEFF_imputed_snpeff_chr_noinfo_noLD_big_filter_medtr.A17.gnm5.div.Epstein_Burghardt_2022.Mt5_qual30_primitives.2021-09-29.final.vcf
-```
-
-
-
-## Diversity {.tabset .tabset-fade .tabset-pills}
-
-### PCA
-```{bash,k234657891, eval=FALSE}
-#Data
-dist_populations<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/dataForPCA.mdist", header=FALSE)
-
-#Acc
-famInd<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/id", header=T)
-#Origin
-famOrigin<-read.table("/Users/jakebotkin/Desktop/GWAS/pca/origin",header=T)
-
-#CMDscale PCA
-mds_populations<-cmdscale(dist_populations,eig=TRUE, 5)
-?cmdscale
-#EigenVectors
-eigenvec_pop<- cbind(famOrigin,famInd,mds_populations$points)
-
-#Proportion of variation captured by each vector
-eigen_percent<- round(((mds_populations$eig/sum(mds_populations$eig))*100),2)
-
-#PCA
-library(tidyverse)
-pca<-ggplot(data=eigenvec_pop)+
-  geom_point(mapping=aes(x=eigenvec_pop$`1`, y=eigenvec_pop$`2`, color=origin), show.legend=TRUE)+
-  ylab("Principal Component 2") +
-  xlab("Principal Component 1")+
-  ggtitle("PCA of M.tuncatula HapMap accessions") +
-  theme_minimal()+
-  scale_y_reverse()+
-  scale_x_reverse()
-pca
-
-#drop plants with no origin
-eigenvec_pop
-eigenvec_pop2<-subset(eigenvec_pop, origin!="Not_avail")
-eigenvec_pop2
-
-#PCA on existing origins
-pca<-ggplot(data=eigenvec_pop2)+
-  geom_point(mapping=aes(x=eigenvec_pop2$`1`, y=eigenvec_pop2$`2`, color=origin), show.legend=TRUE)+
-  ylab("Principal Component 2") +
-  xlab("Principal Component 1")+
-  ggtitle("PCA plot of M.tuncatula HapMap accession SNP subset") +
-  theme_minimal()
-pca
-
-eigenvec_pop2
-eigenvec_pop3<-subset(eigenvec_pop2, origin=="Morocco" | origin=="Algeria" | origin=="Spain" | origin=="France" | origin== "Greece" | origin=="Tunisia")
-eigenvec_pop3
-
-#PCA on major origins
-pca<-ggplot(data=eigenvec_pop3)+
-  geom_point(mapping=aes(x=eigenvec_pop3$`1`, y=eigenvec_pop3$`2`, color=origin), show.legend=TRUE)+
-  ylab("Principal Component 2") +
-  xlab("Principal Component 1")+
-  ggtitle("PCA plot of M.tuncatula HapMap accession SNP subset") +
-  theme_minimal()
-pca
-```
-
-
-### Admixture
-```{bash,k1q345367789, eval=FALSE}
-# Addmixture
-tbl2=read.table("my.vcf.gz.2.Q")
-
-barplot(t(as.matrix(tbl2)), col=c("lightseagreen", "lightcoral"),
-          xlab="Accessions", ylab="Ancestry", border=NA)
-
-```
-
-### SNP dendrogram
-```{bash,k1536456787789, eval=FALSE}
-library(gdsfmt)
-library(ggplot2)
-library(ape)
-library(vcfR)
-library(tidyr)
-library(SNPRelate) 
-library(ggtree)
-
-#Get data
-setwd("~/SNP_tree_HapMap")
-vcf.fn <- "mynewhc_markers.noinfo.vcf"
-
-#VCF to GDS
-snpgdsVCF2GDS(vcf.fn, "test1.gds", method="biallelic.only")
-snpgdsSummary("test1.gds")
-#location of GDS: test1.gds 
-
-### Preparing the data so it is formatted correctly to create a dissimilarity matrix.
-gds_formatted <- snpgdsOpen("test1.gds")
-set.seed(100)
-
-#Identity-By-State (IBS) analysis on genotypes
-ibs_Exon2010_03 <- snpgdsHCluster(snpgdsIBS(gds_formatted,num.thread=2, autosome.only=FALSE))
-
-#Determine groups by permutation
-rvExon2010_03 <- snpgdsCutTree(ibs_Exon2010_03)
-
-#Saving the dendrograms to new Variables
-treeExon2010_03 = rvExon2010_03$dendrogram
-
-#Plot
-SNPTree= plot(rvExon2010_03$dendrogram,horiz=T, main ="Medicago HapMap SNP dendrogram" )
-
-#plot circular tree
-ggtree(as.phylo(as.hclust(treeExon2010_03)), layout="circular",color='darkgreen', branch.length="branch.length")+ geom_tiplab(size=2.5, aes(angle=angle))+ ggtitle("Medicago HapMap SNP dendrogram")
-
-
 ```
 
 
